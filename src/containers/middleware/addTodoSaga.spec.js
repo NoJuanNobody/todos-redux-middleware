@@ -1,6 +1,7 @@
-import { fetchReminder, watchAddTodo, getReminder, reminderUrl } from "./addTodoSaga";
+import {watchAddTodo, getReminder, reminderUrl } from "./addTodoSaga";
 import { addTodo, ADD_TODO } from "../../actions/index";
 import { call, put, take} from "redux-saga/effects";
+import { fetchReminder } from "../../api/fetchReminder";
 
 import { cloneableGenerator } from "redux-saga/utils";
 

@@ -1,9 +1,9 @@
-import { fetchReminder, watchAddTodo, getReminder, reminderUrl } from "./addTodoSaga";
+import {watchAddTodo, getReminder, reminderUrl } from "./addTodoSaga";
 import { addTodo, ADD_TODO } from "../../actions";
 import { expectSaga, testSaga } from "redux-saga-test-plan";
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { put } from "redux-saga/effects";
-import {todos} from "../../reducers/todos";
+import { fetchReminder } from "../../api/fetchReminder";
+
 const todoTextvalue = "test todo value"
 const todo = {
     id:0, 

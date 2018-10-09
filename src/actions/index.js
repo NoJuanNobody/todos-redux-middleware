@@ -2,6 +2,30 @@ let nextTodoId = 0
 export const ADD_TODO = "ADD_TODO";
 export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
 export const TOGGLE_TODO = "TOGGLE_TODO";
+export const GET_REMINDER = "GET_REMINDER"
+export const FETCH_SUCCESS = "FETCH_SUCCESS"
+export const FETCH_FAILED = "FETCH_FAILED"
+
+export function getReminder(payload){
+  return {
+    type: GET_REMINDER,
+    payload
+  }
+}
+
+export function fetchSuccess(payload){
+  return {
+    type:FETCH_SUCCESS,
+    payload
+  }
+}
+
+export function fetchFailed(payload){
+  return {
+    type:FETCH_FAILED,
+    payload
+  }
+}
 
 
 export const addTodo = text => ({

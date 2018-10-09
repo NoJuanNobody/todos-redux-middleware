@@ -29,7 +29,7 @@ render(
   </Provider>
   <h2>Saga Example</h2>
   <Provider store={sagaStore}>
-    <App initialValue="" onSubmit={sagaSubmit} />
+    <App initialValue="" onSubmit={sagaSubmit} actionHandler={actionHandler}/>
   </Provider>
   </div>,
   document.getElementById('root')
@@ -40,6 +40,9 @@ render(
 // you pass in the pure action which saga is listening for
 function sagaSubmit(input) {
   this.dispatch(addTodo(input))
+}
+function actionHandler(action){
+  this.dispatch(action);
 }
 function thunkSubmit(inputvalue){
   return this.dispatch(addTodoWithReminder(inputvalue));

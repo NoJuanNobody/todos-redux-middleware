@@ -1,12 +1,7 @@
 import { addTodo } from '../../actions'
-
+import {fetchReminder} from '../../api/fetchReminder'
 export const reminderUrl = 'https://jsonplaceholder.typicode.com/todos/1';
 
-function fetchReminder(){
-  return fetch(reminderUrl)
-  .then(response => response.json())
-  .then(json => {return json})
-}
 //thunk
 function addTodoWithReminder(todoValue){
   return (dispatch) => {

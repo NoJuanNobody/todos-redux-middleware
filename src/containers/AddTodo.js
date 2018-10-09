@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import addTodoWithReminder from './middleware/addTodoThunk'
+import { getReminder } from "../actions/index";
 export class AddTodo extends Component{
   constructor(props){
     super(props);
@@ -16,7 +16,6 @@ export class AddTodo extends Component{
         if (!this.state.inputValue.trim()) {
           return
         }
-    // this.props.dispatch(addTodoWithReminder(this.state.inputValue));
     this.props.onSubmit(this.state.inputValue)
     this.setState({inputValue:""});
   }
@@ -34,6 +33,48 @@ export class AddTodo extends Component{
             Add Todo
           </button>
         </form>
+          <button onClick={
+            () => {
+              this.props.actionHandler(
+                getReminder(
+                  {
+                    networkRequest:'axios',
+                    fail:false
+                  }))
+            }
+            }>
+            test axios
+          </button>
+          <button onClick={
+            () => {this.props.actionHandler(getReminder({networkRequest:'fetch',fail:false}))}}>
+            test fetch
+          </button>
+          <button onClick={
+            () => {
+              this.props.actionHandler(
+                getReminder(
+                  {
+                    networkRequest:'axios',
+                    fail:true
+                  }))
+            }
+            }>
+            test axios Error
+          </button>
+          <button onClick={
+            () => {
+              this.props.actionHandler(
+                getReminder(
+                  {
+                    networkRequest:'fetch',
+                    fail:true
+                  }))
+            }
+            }>
+            test fetch Error
+          </button>
+          
+        
       </div>
     )
   }
