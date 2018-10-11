@@ -1,9 +1,9 @@
-#Middleware and Network Request evaluations
+# Middleware and Network Request evaluations
 
-##Introduction
+## Introduction
 Working on redux applications, often there is a discussion on how to handle side effects. This repo is intended at trying to determine if Redux-saga, or Thunk is most suitable for production enterprise applications. These two softwares will be implemented and considered based on their ability to scale, and their ease to test and debug. 
 
-##Proof of concept
+## Proof of concept
 Beause both of these applications are meant to be used with redux. I built a POC to compare the implementation and testability of each middleware. the base project is a todo app that was forked from the redux documentation to speed up development time, and the todo app is built off of create react app that was later ejected to allow for a more custom configuration. 
 
 
@@ -11,19 +11,19 @@ as a user adds a Todo to their todo list, middleware will be responsible for fet
 
 another comparison that i was able to make was the decision of whether to use axios vs fetch, and how it affects error handling. this is a section that will be described further in a later section.
 
-###Redux-Thunk
+### Redux-Thunk
 * instalation
 * debugging
 * usage
 * result
 
-####Instalation
+#### Instalation
 ```unix
 $ npm install redux-thunk
 $ yarn add redux-thunk
 ```
 
-####Usage
+#### Usage
 using ES6, import into the main entry file
 ```javascript
 //in the index.js file...
@@ -105,7 +105,7 @@ The url is actually a Json service that mocks common objects as place holders. t
 
 The important part of this is that I thunk enabled me to fetch data from an API, and process that response by adding an additional _reminder to the todo list._ it even assisted me in handling an error. 
 
-####Testing
+#### Testing
 Beause we are using Jest and enzyme to test our react and redux applications, we will also do the same for Thunk-redux. The dificulty with testing thunk is due to the fact that the testing environment that jest/enzyme provides is isolated, and many recources that you would normally include are not available. For example, in order to test functions that involve network requests, we will need to use a dev-dependency called ```fetch-mock```. fectch mock's usage is this:
 
 ```javascript
@@ -158,27 +158,27 @@ describe('thunk to test', async () => {
 
 This will allow us to manage the redux state that we need to test our application, without using the real redux store (that would require more configuration and shims probably. this works right out of the box. ).
 
-###Problems with Thunk Testing
+### Problems with Thunk Testing
 At least for the moment there is no clear way of writing thunk middleware or their tests so that we can consistently test and maintain buisness logic as a source of truth. every time that a thunk is changed, the test may also need to be changed to reflect the test changes. these tests over time will mutate the original intention.
 
-####Other considerations with Thunk-redux
+#### Other considerations with Thunk-redux
 thunk changes the way redux works, by aggressively changing the actions that are created and dispatched to the reducers. there is an issue with serparation of concerns that would force the developer to be locked in to using the tool as long as they use redux.
 
-##Saga
+## Saga
 * instalation
 * packages and dependencies
 * debugging
 * usage
 * result
 
-####Instalation
+#### Instalation
 this is how you connect redux with saga-redux
 ```
 npm install --save redux-saga
 
 yarn add redux-saga
 ```
-####Usage
+#### Usage
 
 ```javascript
 import { createStore , applyMiddleware} from 'redux'
@@ -216,7 +216,7 @@ function actionHandler(action){
 redux-saga is included the same way that thunk is to the redux store, however you need to additionally run the root saga in order to start the flow of the saga in the background of your application. saga is separated from redux, so when actions are dispatched, pure actions are created. Saga then listens via ```watcher sagas``` to the stream of actions occuring and then calls other ```worker sagas``` in order to execute background or indirect subtransactions that need to happen in the buisness flow of your application. this is especially useful when an app requires complex middleware that has tiered logic and a series of subtransactions that may or may not occur. 
 
 
-#####Watcher and worker sagas
+##### Watcher and worker sagas
 Watcher and worker sagas are born from the saga pattern in distributed systems. In order to create an overal transaction, a number of subtransactions will need to be completed. in order to watch and make sure that these transactions all work in the right order and do not fail, a Saga Execution Coordinator **(SEC)** needs to be involved. this idea informed redux-saga but our specific use case has different demands. In Redux-saga SEC's take on the form of ```watcher Sagas``` and our subtransactions are ```worker sagas```. the pattern looks like this:
 
 ```javascript
@@ -266,7 +266,7 @@ if(action.type === DO_THIS){
 
 ```
 
-####Testing sagas
+#### Testing sagas
 
 There are several way to test sagas. one method is testing the order of your functions is not changing. for example if a saga is making sure that login and logout will not change implementation, you may want to write a test to lock in how these transactions happen relative to each other. here is an older test I wrote along with this demo that does just that. 
 
