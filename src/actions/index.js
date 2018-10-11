@@ -2,9 +2,18 @@ let nextTodoId = 0
 export const ADD_TODO = "ADD_TODO";
 export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
 export const TOGGLE_TODO = "TOGGLE_TODO";
-export const GET_REMINDER = "GET_REMINDER"
-export const FETCH_SUCCESS = "FETCH_SUCCESS"
-export const FETCH_FAILED = "FETCH_FAILED"
+export const GET_REMINDER = "GET_REMINDER";
+export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_FAILED = "FETCH_FAILED";
+export const TRIGGER_OFFLINE_MODE = "TRIGGER_OFFLINE_MODE";
+
+export function triggerOfflineMode(payload){
+  return {
+    type:TRIGGER_OFFLINE_MODE,
+    payload
+  }
+}
+
 
 export function getReminder(payload){
   return {

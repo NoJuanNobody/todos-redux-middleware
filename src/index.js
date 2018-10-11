@@ -9,16 +9,20 @@ import createSagaMiddleWare from 'redux-saga'
 import addTodoWithReminder from "./containers/middleware/addTodoThunk";
 import { addTodo } from "./actions/index";
 import { watchAddTodo } from "./containers/middleware/addTodoSaga";
-const sagaMiddleware = createSagaMiddleWare();
+import { ReduxSagaEmitter, ReduxEmitter} from "kuker-emitters";
+
+const reduxEmitter = ReduxEmitter()
+const emitter = ReduxSagaEmitter(); 
+const sagaMiddleware = createSagaMiddleWare({sagaMonitor:emitter.sagaMonitor});
 const thunkStore = createStore(
   rootReducer,
   applyMiddleware(thunk)
   );
 const sagaStore = createStore(
   rootReducer,
-  applyMiddleware(sagaMiddleware)
+  applyMiddleware(sagaMiddleware, reduxEmitter)
   );
-
+emitter.setStore(sagaStore);
   //run your middleware here
 sagaMiddleware.run(watchAddTodo)
 render(

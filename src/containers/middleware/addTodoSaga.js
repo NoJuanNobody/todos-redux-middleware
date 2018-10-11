@@ -1,7 +1,8 @@
 import { take, call,put, fork} from "redux-saga/effects";
-import { addTodo, ADD_TODO, GET_REMINDER, fetchSuccess, fetchFailed} from "../../actions/index";
+import { addTodo, ADD_TODO, GET_REMINDER, fetchSuccess, fetchFailed, triggerOfflineMode} from "../../actions/index";
 import { fetchReminder, axiosReminder } from "../../api/fetchReminder";
 import { delay } from "redux-saga";
+import { URLParamsError } from "../../api/errors";
 export const reminderUrl = 'https://jsonplaceholder.typicode.com/todos/1';
 
 //watcher saga SEC
@@ -11,13 +12,8 @@ export function* watchAddTodo(){
         if(action.type === ADD_TODO){
             yield call(getReminderAndAddTodo, action.payload);
         }
-        if(action.type === GET_REMINDER){
-            // try {
-                yield fork(retryReminder, action.payload);
-            // } catch (error) {
-                // yield fork(getReminder, action.payload);
-            // }
-
+        if(action.type === GET_REMINDER){       
+              let response = yield fork(retryReminder, action.payload);
         }
 
     }
@@ -29,9 +25,11 @@ export function* retryReminder(reminderConfig){
     let res;
     while(i && !res){
         res = yield call(getReminder, reminderConfig);
-        yield console.log(res)
         yield call(delay, 1000)
         yield i--;
+    }
+    if(!res){
+        yield put(triggerOfflineMode(reminderConfig));
     }
 }
 export function* getReminder(reminderConfig){

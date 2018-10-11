@@ -1,4 +1,4 @@
-import { FETCH_FAILED, FETCH_SUCCESS } from "../actions/index";
+import { FETCH_FAILED, FETCH_SUCCESS, TRIGGER_OFFLINE_MODE } from "../actions/index";
 
 const msg = {
     success: "successfully fetched with ",
@@ -38,10 +38,21 @@ const networkRequests = (state = [], action) => {
                     text:'✕'+action.payload.networkRequest+msg.end+stamp,
                     color:'red'
                 }
-        ]
+            ]
+        case TRIGGER_OFFLINE_MODE:
+            return [...state,
+                {
+                    id:stamp+'-'+action.payload.networkRequest,
+                    text:'we were unable to fetch with '+action.payload.networkRequest+' triggering offline mode',
+                    color:'orange'
+                }
+            ]
         default:
             return state
     }
 }
+
+
+
 
 export default networkRequests
